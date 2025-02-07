@@ -49,3 +49,62 @@ export const createPolicy = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
+export const deletePolicy = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Invalid Product Id" });
+  }
+
+  try {
+    await Policy.findByIdAndDelete(id);
+    res.status(200).json({ success: true, message: "Policy deleted" });
+  } catch (error) {
+    console.log("Error in deleting policy:", error.message);
+    res.status(500).json({ status: false, message: "Server error" });
+  }
+};
+
+export const updatePolicy = async (req, res) => {
+  const { id } = req.params;
+  const updateData = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Invalid policy ID" });
+  }
+
+  try {
+    let policy = await Policy.findById(id);
+    if (!policy) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Policy not found" });
+    }
+
+    if (
+      updateData.harga_kendaraan !== undefined ||
+      updateData.rate_premi !== undefined
+    ) {
+      const harga_kendaraan =
+        updateData.harga_kendaraan ?? policy.harga_kendaraan;
+      const rate_premi = updateData.rate_premi ?? policy.rate_premi;
+
+      updateData.harga_premi = harga_kendaraan * rate_premi;
+    }
+
+    const updatedPolicy = await Policy.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({ success: true, data: updatedPolicy });
+  } catch (error) {
+    console.error("Error in updating policy:", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
