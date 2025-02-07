@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const policySchema = new mongoose.Schema(
   {
+    no_urut: {
+      type: Number,
+      required: true,
+    },
     nomor_polis: {
       type: String,
       required: true,
