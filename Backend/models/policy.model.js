@@ -16,14 +16,20 @@ const policySchema = new mongoose.Schema(
     tanggal_efektif: {
       type: Date,
       required: [true, "Tanggal Efektif perlu diisi"],
+      set: (value) => value.split("T")[0],
     },
     tanggal_expired: {
       type: Date,
       required: [true, "Tanggal Expired perlu diisi"],
+      set: (value) => value.split("T")[0],
     },
     merek_kendaraan: {
       type: String,
       required: [true, "Merek Kendaraan perlu diisi"],
+    },
+    tipe_kendaraan: {
+      type: String,
+      required: [true, "Tipe Kendaraan perlu diisi"],
     },
     tahun_kendaraan: {
       type: Number,
