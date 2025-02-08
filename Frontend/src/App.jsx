@@ -1,13 +1,20 @@
 import { Box } from "@mui/material";
-import PolicyForm from "./component/PolicyForm";
-import PolicyTable from "./component/PolicyTable";
+import PolicyPage from "./component/PolicyPage";
 
 function App() {
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        padding: 3,
+      }}
+    >
       <h1>Managemen Polis</h1>
-      <PolicyTable />
-      <PolicyForm />
+      <PolicyPage />
     </Box>
   );
 }
